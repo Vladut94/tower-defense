@@ -3,6 +3,7 @@ class PlacementTile {
         this.position = position
         this.size = 64
         this.color = 'rgba(255, 255, 255, 0.15)'
+        this.occupied = false
     }
 
     draw() {
@@ -18,7 +19,6 @@ class PlacementTile {
             mouse.y > this.position.y && 
             mouse.y < this.position.y + this.size
             ){
-                console.log('colliding');
                 this.color = 'white'
         }else {
             this.color = 'rgba(255, 255, 255, 0.15)'
@@ -63,5 +63,17 @@ class Enemy {
             ) {
             this.waypointIndex++
         }
+    }
+}
+
+class Building {
+    constructor({ position = { x: 0, y: 0 } }) {
+        this.position = position
+        this.width = 64 * 2
+    }
+
+    draw() {
+        context.fillStyle = 'blue';
+        context.fillRect(this.position.x, this.position.y, this.width, 64)
     }
 }
