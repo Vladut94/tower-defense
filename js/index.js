@@ -16,14 +16,17 @@ image.src = 'assets/gameMap.png';
 
 //enemy creation
 const enemies = []
-for (let i = 1; i < 10; i++) {
-    const xOffset = i * 150
-    enemies.push(new Enemy({
-        position: { x: waypoints[0].x - xOffset, y: waypoints[0].y }
-    }))
+let enemyCount = 3
+
+function spawnEnemies(spawnCount) {
+    for (let i = 1; i < spawnCount + 1; i++) {
+        const xOffset = i * 150
+        enemies.push(new Enemy({
+            position: { x: waypoints[0].x - xOffset, y: waypoints[0].y }
+        }))
+    }
 }
-
-
+spawnEnemies(enemyCount)
 
 //placement creation
 const placementTilesData2D = []
@@ -91,6 +94,7 @@ function animate() {
 
             //this is when a projectile hits an enemy
             if (distance < projectile.enemy.radius + projectile.radius) {
+                //enemy health and enemy removal
                 projectile.enemy.health -= 20
                 if (projectile.enemy.health <= 0) {
                     const enemyIndex = enemies.findIndex((enemy) => {
@@ -98,6 +102,13 @@ function animate() {
                     })
                     if (enemyIndex > -1) enemies.splice(enemyIndex, 1)
                 }
+
+                //tracking total amount of enemies
+                if (enemies.length === 0) {
+                    enemyCount += 2
+                    spawnEnemies(enemyCount)
+                }
+
                 console.log(projectile.enemy.health)
                 building.projectiles.splice(i, 1)
             }
