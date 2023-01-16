@@ -17,6 +17,7 @@ image.src = 'assets/gameMap.png';
 //enemy creation
 const enemies = []
 let enemyCount = 3
+let hearts = 10
 
 function spawnEnemies(spawnCount) {
     for (let i = 1; i < spawnCount + 1; i++) {
@@ -59,13 +60,31 @@ const buildings = [];
 let activeTile = undefined;
 
 function animate() {
-    requestAnimationFrame(animate)
+    const animationId = requestAnimationFrame(animate)
 
     context.drawImage(image, 0, 0)
 
     for (let i = enemies.length - 1; i >= 0; i--) {
         const enemy = enemies[i]
         enemy.update()
+
+        if(enemy.position.x > canvas.width) {
+            hearts -= 1
+            enemies.splice(i, 1)
+            console.log(hearts);
+            
+            if (hearts === 0) {
+                console.log('game over')
+                cancelAnimationFrame(animationId)
+                document.querySelector('.message').style.display = 'flex'
+            }
+        }
+    }
+
+    //tracking total amount of enemies
+    if (enemies.length === 0) {
+        enemyCount += 2
+        spawnEnemies(enemyCount)
     }
 
     placementTiles.forEach(tile => {
@@ -101,12 +120,6 @@ function animate() {
                         return projectile.enemy === enemy
                     })
                     if (enemyIndex > -1) enemies.splice(enemyIndex, 1)
-                }
-
-                //tracking total amount of enemies
-                if (enemies.length === 0) {
-                    enemyCount += 2
-                    spawnEnemies(enemyCount)
                 }
 
                 console.log(projectile.enemy.health)
