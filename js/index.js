@@ -18,6 +18,7 @@ image.src = 'assets/gameMap.png';
 const enemies = []
 let enemyCount = 3
 let hearts = 10
+let coins = 100
 
 function spawnEnemies(spawnCount) {
     for (let i = 1; i < spawnCount + 1; i++) {
@@ -71,7 +72,7 @@ function animate() {
         if(enemy.position.x > canvas.width) {
             hearts -= 1
             enemies.splice(i, 1)
-            console.log(hearts);
+            document.querySelector('#hearts').innerHTML = hearts
             
             if (hearts === 0) {
                 console.log('game over')
@@ -119,7 +120,11 @@ function animate() {
                     const enemyIndex = enemies.findIndex((enemy) => {
                         return projectile.enemy === enemy
                     })
-                    if (enemyIndex > -1) enemies.splice(enemyIndex, 1)
+                    if (enemyIndex > -1) {
+                        enemies.splice(enemyIndex, 1)
+                        coins += 25
+                        document.querySelector('#coins').innerHTML = coins
+                    }
                 }
 
                 console.log(projectile.enemy.health)
@@ -136,7 +141,9 @@ const mouse = {
 }
 
 canvas.addEventListener('click', (event) => {
-    if (activeTile && !activeTile.isOccupied) {
+    if (activeTile && !activeTile.isOccupied && coins - 50 >= 0) {
+        coins -= 50
+        document.querySelector('#coins').innerHTML = coins
         buildings.push(
             new Building({
                 position: {
