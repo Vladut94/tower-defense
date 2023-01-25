@@ -27,14 +27,15 @@ class Building extends Sprite {
     draw() {
         super.draw()
 
-        context.beginPath()
-        context.arc(this.center.x, this.center.y, this.radius, 0, Math.PI * 2)
-        context.fillStyle = 'rgba(0, 0, 255, 0.2)'
-        context.fill()
+        // context.beginPath()
+        // context.arc(this.center.x, this.center.y, this.radius, 0, Math.PI * 2)
+        // context.fillStyle = 'rgba(0, 0, 255, 0.2)'
+        // context.fill()
     }
 
     update() {
         this.draw()
+        if(this.target || !this.target && this.frames.current !== 0) super.update()
 
         if(this.target && this.frames.current === 6 && this.frames.elapsed % this.frames.hold === 0) this.shoot()
     }

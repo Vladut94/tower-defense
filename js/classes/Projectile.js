@@ -18,7 +18,7 @@ class Projectile extends Sprite {
             this.enemy.center.x - this.position.x
         )
 
-        const power = 3
+        const power = 5
         this.velocity.x = Math.cos(angle) * power
         this.velocity.y = Math.sin(angle) * power
 
