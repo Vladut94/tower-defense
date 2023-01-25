@@ -1,5 +1,5 @@
 class Sprite {
-    constructor({ position = { x: 0, y: 0 }, imageSrc, frames = { max: 1 } }) {
+    constructor({ position = { x: 0, y: 0 }, imageSrc, frames = { max: 1 }, offset = { x: 0, y: 0} }) {
         this.position = position
         this.image = new Image()
         this.image.src = imageSrc
@@ -9,6 +9,7 @@ class Sprite {
             elapsed: 0,
             hold: 9
         }
+        this.offset = offset
     }
 
     draw() {
@@ -28,18 +29,20 @@ class Sprite {
             crop.position.y, 
             crop.width, 
             crop.height, 
-            this.position.x, 
-            this.position.y,
+            this.position.x + this.offset.x, 
+            this.position.y + this.offset.y,
             crop.width,
             crop.height
         )
+    }
 
+    update() {
         //responsible for animation
         this.frames.elapsed ++
         if (this.frames.elapsed % this.frames.hold === 0) {
             this.frames.current ++
             if(this.frames.current >= this.frames.max - 1) {
-                this.frames.current = 0
+                 this.frames.current = 0
             }
         }
     }
